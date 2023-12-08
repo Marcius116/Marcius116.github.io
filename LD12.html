@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apskritimų Informacija</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        button {
+            padding: 8px;
+            margin-top: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Apskritimų Informacija</h2>
+
+    <label for="minDiameter">Mažiausias Apskritimo Diametras:</label>
+    <input type="number" id="minDiameter" min="0" required>
+
+    <label for="maxDiameter">Didžiausias Apskritimo Diametras:</label>
+    <input type="number" id="maxDiameter" min="0" required>
+
+    <label for="circleCount">Apskritimų Skaičius:</label>
+    <input type="number" id="circleCount" min="1" required>
+
+    <button onclick="calculateCircles()">Skaičiuoti</button>
+
+    <script>
+        function calculateCircles() {
+            // Gauname reikiamus duomenis
+            const minDiameter = parseFloat(document.getElementById('minDiameter').value);
+            const maxDiameter = parseFloat(document.getElementById('maxDiameter').value);
+            const circleCount = parseInt(document.getElementById('circleCount').value);
+
+            // Patikriname duomenis
+            if (isNaN(minDiameter) || isNaN(maxDiameter) || isNaN(circleCount) || minDiameter < 0 || maxDiameter < 0 || minDiameter >= maxDiameter) {
+                alert('Neteisingi duomenys! Patikrinkite įvestus skaičius.');
+                return;
+            }
+
+            // Skaičiuojame žingsnį
+            const step = (maxDiameter - minDiameter) / (circleCount - 1);
+
+            // Skaičiuojame ir saugome plotus
+            const areas = [];
+            let currentDiameter = minDiameter;
+            for (let i = 0; i < circleCount; i++) {
+                const radius = currentDiameter / 2;
+                const area = Math.PI * Math.pow(radius, 2);
+                areas.push(Math.round(area));
+                currentDiameter += step;
+            }
+
+            // Išvedame rezultatus į konsolę
+            console.log('Apskritimų Plotai:', areas);
+
+            // Išvedame rezultatus į tinklapio elementą
+            const resultContainer = document.createElement('div');
+            resultContainer.innerHTML = '<h3>Apskritimų Plotai:</h3>';
+            areas.forEach((area, index) => {
+                resultContainer.innerHTML += `<p>Apskritimo ${index + 1} plotas: ${area}</p>`;
+            });
+            document.body.appendChild(resultContainer);
+        }
+    </script>
+</body>
+</html>
